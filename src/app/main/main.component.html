@@ -15,7 +15,7 @@
       <md-menu-content width="4" > 
         <span ng-hide="$ctrl.user">
            <md-menu-item>
-            <md-button ui-sref="main.login">
+            <md-button ui-sref="main.users.login">
               <div layout="row" flex>
                 <p flex>Login</p>
                 <md-icon md-menu-align-target style="margin: auto 3px auto 0;">face</md-icon>
@@ -23,6 +23,18 @@
             </md-button>
             
           </md-menu-item> 
+                  
+        </span>
+        <span ng-show="$ctrl.user">
+          
+          <md-menu-item>
+            <div layout="row" flex>
+              <p flex>{{$ctrl.user.email}}</p>
+              <md-icon md-menu-align-target style="margin: auto 3px auto 0;">face</md-icon>
+            </div>
+          </md-menu-item>
+          
+          <md-divider></md-divider>
           
           <md-menu-item> 
             <md-button ui-sref="main.admin.manage">
@@ -31,8 +43,19 @@
                 <md-icon md-menu-align-target style="margin: auto 3px auto 0;">store</md-icon>
               </div>
             </md-button>
-          </md-menu-item>        
+          </md-menu-item>
+
+          <md-divider></md-divider>
+
+          <md-menu-item> 
+            <md-button ng-click="$ctrl.logout()">
+              <div layout="row" flex>
+                <p flex>התנתקות</p> 
+              </div>
+            </md-button>
+          </md-menu-item>
         </span>
+        
       </md-menu-content>
 
     </md-menu>

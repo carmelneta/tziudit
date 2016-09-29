@@ -22,35 +22,31 @@ function AdminRoutes ($stateProvider) {
     name: 'main.admin.manage',
     url: '',
     component : 'manage.component',
-    // data: { requiresAuth: true }
+    data: { requiresAuth: true }
   }
 
   var ordersState = {
     name: 'main.admin.manage.orders',
     url: '/orders', 
-    component : 'manage.orders.component',
-    // data: { requiresAuth: true }
+    component : 'manage.orders.component'
   }
 
   var ordersEditState = {
     name: 'main.admin.manage.orders.edit',
     url: '/{id}', 
-    component : 'manage.orders.component',
-    // data: { requiresAuth: true }
+    component : 'manage.orders.component'
   }
 
   var productsState = {
     name: 'main.admin.manage.products',
     url: '/products',
-    component : 'manage.products.component',
-    // data: { requiresAuth: true }
+    component : 'manage.products.component'
   }
 
-  var ControlState = {
+  var controlState = {
     name: 'main.admin.manage.control',
     url: '/control',
-    component : 'manage.control.component',
-    // data: { requiresAuth: true }
+    component : 'manage.control.component'
   }
 
   $stateProvider.state(indexState); 
@@ -58,7 +54,7 @@ function AdminRoutes ($stateProvider) {
   $stateProvider.state(ordersState); 
   $stateProvider.state(ordersEditState); 
   $stateProvider.state(productsState); 
-  $stateProvider.state(ControlState); 
+  $stateProvider.state(controlState); 
 }
 const AdminComponent = {
   template: '<ui-view></ui-view>', 

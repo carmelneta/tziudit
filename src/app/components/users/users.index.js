@@ -1,6 +1,6 @@
-// import { UserProfileComponent } from './profile/profile.component';
+import { LoginComponent } from './login.component';
 
-function usersRoutes ($stateProvider) { 
+function usersRoutes ($stateProvider, ) { 
   'ngInject';
 
 
@@ -11,14 +11,14 @@ function usersRoutes ($stateProvider) {
     component: 'users.index'
   } 
 
-  // var profileState = {
-  //   name: 'main.users.profile',
-  //   url: '/profile',
-  //   component : 'userProfile',
-  //   data: { requiresAuth: true }
-  // }
+  var loginState = {
+    name: 'main.users.login',
+    url : '/login',
+    component: 'login.component'
+  }  
 
   $stateProvider.state(indexState); 
+  $stateProvider.state(loginState); 
 }
 const UsersComponent = {
   template: '<ui-view></ui-view>', 
@@ -30,6 +30,7 @@ const UsersComponent = {
 export function UsersInit(app) {
   app
     .config(usersRoutes)
+    .component('login.component', LoginComponent) 
     .component('users.index', UsersComponent) 
 
   ;
