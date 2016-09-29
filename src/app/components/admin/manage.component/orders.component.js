@@ -5,15 +5,14 @@ class Ctrl {
     console.log('Orders Compoennet');
 
     this._$firebaseArray = $firebaseArray;
-
+    this._$state = $state;
     this.filters = [
       {title: 'עתידיות', status: 'open'},
       {title: 'בהשאלה', status: 'live'},
       {title: 'חזר', status: 'close'},
     ];
-    
+
    this.filter = 0;
-  //  this.activeOrder = '-KSLqQ31CwXBX61yA_ee';
   }
 
  
@@ -21,10 +20,16 @@ class Ctrl {
  
     var ref = firebase.database().ref().child("orders");   
     this.products = this._$firebaseArray(ref);
-  } 
+    
+    if(this._$state.params.id){
+      this.activeOrder = this._$state.params.id;
+    }
+    
+  }  
 
-  ch(order) {
-    console.log(order);
+  editOrder(order) {
+    this.activeOrder = order.$id;
+    this._$state.go('main.admin.manage.orders.edit', {id: order.$id});
   }
 
 }
@@ -50,7 +55,7 @@ export const ManangeOrdersComponent = {
 
     <div layout="row" layout-xs="column">
       <div flex>
-        <orders-list filters="$ctrl.filters" filter="$ctrl.filter" on-click="$ctrl.activeOrder = order.$id"></orders-list>
+        <orders-list filters="$ctrl.filters" filter="$ctrl.filter" on-click="$ctrl.editOrder(order)"></orders-list>
       </div>
       <div flex>
         <edit-order ng-if="$ctrl.activeOrder" id="$ctrl.activeOrder" statuss="$ctrl.filters"></edit-product>

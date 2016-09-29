@@ -12,7 +12,7 @@ import { AdminInit } from './components/admin/admin.index';
 
 import { ProductListComponent } from './components/products/products-list.component';
 
-var app = angular.module('tziudit', ['ui.router', 'ngAnimate', 'ngCookies', 'ngSanitize', 'ngMessages', 'ngAria', 'ngMaterial', 'firebase']);
+var app = angular.module('tziudit', ['ui.router', 'ngAnimate', 'ngCookies', 'ngSanitize', 'ngMessages', 'ngAria', 'ngMaterial', 'firebase', 'md.data.table']);
 
 app
   .config(config)

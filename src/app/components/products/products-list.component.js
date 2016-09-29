@@ -7,16 +7,30 @@ class Ctrl {
     this._$firebaseArray = $firebaseArray;
   }
  
-  $onInit() { }
+  $onInit() {
+    
+  }
   
   
   $onChanges(change) {
-    
-    //  Load Products From DB or from attr  
-    if(!change.products.currentValue) {
-      var ref = firebase.database().ref().child("products");   
-      this.products = this._$firebaseArray(ref);
-    }
+
+    //  The Compoennet can be initiated with product list  
+    let initProducts = change.products.currentValue;
+        
+    var ref = firebase.database().ref().child("products");   
+    this.products = this._$firebaseArray(ref);
+
+    //  Loop Active products list, set items to selected
+    if(initProducts) {
+      if(!this.showOthers) {
+        this.products = initProducts;
+        this.products.map(pr =>  pr.selected = true);
+      }else {
+        this.products.$loaded().then( products => {
+          products.map(pr =>  pr.selected = initProducts.filter(p => p.id === pr.$id).length ? true : false );
+        });
+      }
+    } 
   }
 
   change() {
@@ -38,7 +52,9 @@ export const ProductListComponent = {
     'hideSelect': '<',
     'hideEdit' : '<',
     'title' : '<',
-    'products': '<'
+    'products': '<',
+    'showOthers' : '<',
+    'orderBy' : '<'
   },
   template: `
   <style>
@@ -68,7 +84,7 @@ export const ProductListComponent = {
 
   <md-content flex layout-padding>
     <md-list>    
-      <md-list-item ng-repeat="product in $ctrl.products" ng-click="$ctrl.click(product)">
+      <md-list-item ng-repeat="product in $ctrl.products | orderBy: $ctrl.orderBy" ng-click="$ctrl.click(product)">
         <md-checkbox ng-if="!$ctrl.hideSelect" ng-model="product.selected" ng-change="$ctrl.change()"></md-checkbox>
         <p>{{product.title}}</p>
         <md-icon ng-hide="$ctrl.hideEdit">mode_edit</md-icon>

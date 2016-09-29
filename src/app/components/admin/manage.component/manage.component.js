@@ -8,20 +8,27 @@ class Ctrl {
     this._$state = $state;
 
     this.views = [
-      { title: 'הזמנות', name: 'orders' },
-      { title: 'ניהול מלאי', name: 'products' }
+      { title: 'הזמנות', name: 'main.admin.manage.orders' },
+      { title: 'ניהול מלאי', name: 'main.admin.manage.products' },
+      { title: 'טבלת שליטה', name: 'main.admin.manage.control' },
     ];
+
   }
  
   $onInit() {
  
     var ref = firebase.database().ref().child("products");   
     this.products = this._$firebaseArray(ref);
-    this.view = 0;
+
+    this.view = this._$state.$current.name;
+    if(this._$state.$current.name === 'main.admin.manage') {
+      this.view = 2;
+    }
+
   }
   
   viewChange() {
-    this._$state.go( 'main.admin.manage.' + this.views[this.view].name);
+    this._$state.go( this.views[this.view].name );
   }
 
 }

@@ -12,6 +12,7 @@ class Ctrl {
     var ref = firebase.database().ref().child("products");   
     this.products = this._$firebaseArray(ref);
     this.editProduct = null;
+
   } 
 
   

@@ -17,5 +17,5 @@ export function routerConfig ($stateProvider, $urlRouterProvider) {
   $stateProvider.state(mainState);
   $stateProvider.state(homeState); 
 
-  // $urlRouterProvider.otherwise('/');
+  $urlRouterProvider.otherwise('/');
 }

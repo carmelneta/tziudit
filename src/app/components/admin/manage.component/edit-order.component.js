@@ -6,10 +6,23 @@ class Ctrl {
     
   }
  
-  $onInit() {    } 
+  $onInit() { 
+    this.dirtyFlag = false;
+  } 
 
   save() {
-    this.order.$save().then();
+    if(this.updateProducts) {
+      this.order.products  = this.updateProducts.map(x => {
+        return {
+          id: x.$id,
+          title: x.title
+        };
+      });
+    }
+    this.order.$save().then(x => {
+      this.dirtyFlag = false;
+      this.updateProducts = null;
+    });
   } 
 
   delete() {
@@ -24,13 +37,16 @@ class Ctrl {
     this.order.$save();
   }
 
+  productChanged(products) {
+    this.dirtyFlag = true;
+    this.updateProducts = products;
+  }
+
   $onChanges(change) {    
 
     var ref = firebase.database().ref().child("orders").child(this.id);
-        
     this.order = this._$firebaseObject(ref);
-    
-    // this.product.$loaded().then( x => console.log(x) );
+    this.order.$loaded().then( x => this.notFound = x.$value === null );
   } 
 }
 
@@ -46,11 +62,16 @@ export const EditOrderComponent = {
   </style>
    <md-toolbar class="md-warn">
       <div class="md-toolbar-tools">
-      <h2 ng-show="$ctrl.productId !== 'new'" class="md-flex">עריכת השאלה: {{$ctrl.order.name}}</h2>
+      <h2 ng-show="$ctrl.productId !== 'new'" class="md-flex">
+        <span ng-hide="$ctrl.notFound">עריכת השאלה: {{$ctrl.order.name}}</span>
+        <span ng-show="$ctrl.notFound">לא נמצאה השאלה</span>
+        
+        <md-button ng-if="$ctrl.dirtyFlag" ng-click="$ctrl.save()" class="md-primary md-raised">שמירת שינויים</md-button>
+      </h2>
     </div>
   </md-toolbar>
 
-  <md-content flex layout-padding ng-if="$ctrl.id">
+  <md-content flex layout-padding ng-if="$ctrl.id && !$ctrl.notFound">
     <form ng-submit="$ctrl.save()">
       
       <p flex>{{$ctrl.order.start}} | {{$ctrl.order.end}}</p>
@@ -78,7 +99,14 @@ export const EditOrderComponent = {
       </div>
     </form>
 
-    <products-list ng-if="$ctrl.order.products" hide-select="true" hide-edit="true" products="$ctrl.order.products" title="'פריטים'"></products-list> 
+    <products-list 
+      order-by="'-selected'" 
+      show-others="true" 
+      hide-edit="true" 
+      products="$ctrl.order.products"
+      on-change="$ctrl.productChanged(products)" 
+      title="'פריטים'">
+    </products-list> 
   </md-content> 
   `
 }
