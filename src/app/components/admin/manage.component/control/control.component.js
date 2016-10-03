@@ -18,7 +18,7 @@ class Ctrl {
   } 
  
 
-  $onChanges(change) {    
+  $onChanges() {    
 
     var ref = firebase.database().ref().child("orders").orderByChild('start');
     var productsRef = firebase.database().ref().child('products');
@@ -26,8 +26,6 @@ class Ctrl {
     this.products = this._$firebaseArray(productsRef);
     this.orders = this._$firebaseArray(ref);
 
-    // this.products.$loaded(x => this.products.map(x => console.log(x)));
-    // this.orders.$loaded(x => this.orders.map(x => console.log(x)));
   } 
 }
 

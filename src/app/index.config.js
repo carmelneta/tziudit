@@ -1,4 +1,4 @@
-export function config ($logProvider, $mdThemingProvider, $mdDateLocaleProvider) {
+export function config ($logProvider, $mdThemingProvider, $mdDateLocaleProvider, $locationProvider) {
   'ngInject';
   // Enable log
   $logProvider.debugEnabled(true);
@@ -9,5 +9,7 @@ export function config ($logProvider, $mdThemingProvider, $mdDateLocaleProvider)
     return  date.getDate() + '/' + ( date.getMonth() +1 )  + '/' + date.getFullYear();
   };
 
+  
+  $locationProvider.html5Mode(true);
   
 }

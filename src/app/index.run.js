@@ -1,4 +1,4 @@
-export function runBlock ($log, $transitions, Auth, $q) {
+export function runBlock ($log, $transitions, Auth, $q, $firebaseObject) {
   'ngInject';
   console.log(Auth);
   $log.debug('runBlock end');
@@ -52,14 +52,37 @@ export function runBlock ($log, $transitions, Auth, $q) {
   
   var adminTest = transition => {
     var q = transition.injector().get('$q');
-     var deferred = q.defer();
+    var auth = transition.injector().get('Auth');
+    var deferred = q.defer();
 
-      // return auth.$requireSignIn();
-      deferred.resolve('s');
+    // var uid = auth.$getAuth().uid;
+    auth.$waitForSignIn().then(
+      x => {
+        //  'ETbNvEjCquhYRcewU9lL2x2o5IR2' // Not Allowed
+        if(!x) {
+          deferred.reject('User Not Logged in');
+          return;
+        }
+        var ref = firebase.database().ref('admins').child( x.uid );
+        var obj = $firebaseObject(ref);
+        obj.$loaded(
+          x => {
+            if(x.$value) {
+              deferred.resolve();
+            }else {
+              deferred.reject('User Is not an admin');
+            }
+          },
+          x => deferred.reject(x)
+        );
+      },
+      x => deferred.reject(x)
+    ); 
       
-      return deferred.promise; 
+    return deferred.promise; 
   };
   
   $transitions.onBefore(adminsCriteria, adminTest, { priority: 10 });
   $transitions.onError(adminsCriteria,  unAuth);
+  
 }

@@ -22,7 +22,7 @@ function AdminRoutes ($stateProvider) {
     name: 'main.admin.manage',
     url: '',
     component : 'manage.component',
-    data: { requiresAuth: true }
+    data: { adminOnly: true }
   }
 
   var ordersState = {

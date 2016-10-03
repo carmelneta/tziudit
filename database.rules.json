@@ -1,10 +1,26 @@
 {
   "rules": {
-    ".read":true,
-    ".write":true,
-    "admins": {
-      ".read": false,
-      ".write": false
+    "products" : {
+      ".read" : true,
+      //  Only Admins can modifay Products list
+      ".write": "root.child('admins/' + auth.uid ).val() === true "
+    },
+    "orders": {
+      ".write": true,
+      ".read": "root.child('admins/' + auth.uid ).val() === true",      
+      "$orders": {
+        ".validate" : "newData.hasChildren(['status']) && ( newData.child('status').val() === 0 || root.child('admins/' + auth.uid ).val() === true )",  
+      	".read": "(data.child('uid').val() === auth.uid) || (root.child('admins/' + auth.uid ).val() === true )"
+      }  
+    },
+
+    // No one can write to admins Object. Just user can read record of his own ID, to test if he is admin
+   	"admins": {
+    	".write": false,
+      "$uid": {
+        ".read": "$uid === auth.uid",
+        ".write": false
+      }
     }
 	}
 }
