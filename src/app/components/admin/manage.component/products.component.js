@@ -46,7 +46,7 @@ export const ManangeProductsComponent = {
 
     <div layout="row" layout-xs="column">
       <div flex>
-        <products-list hide-select="true" on-click="$ctrl.selectProduct(product)"></products-list>
+        <products-list hide-select="true" hide-price="true" on-click="$ctrl.selectProduct(product)"></products-list>
       </div>
       <div flex>
         <edit-product ng-if="$ctrl.editProduct" product-id="$ctrl.editProduct"></edit-product>

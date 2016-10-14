@@ -51,6 +51,7 @@ export const ProductListComponent = {
     'onClick' : '&',
     'hideSelect': '<',
     'hideEdit' : '<',
+    'hidePrice' : '<',
     'title' : '<',
     'products': '<',
     'showOthers' : '<',
@@ -88,6 +89,9 @@ export const ProductListComponent = {
         <md-checkbox ng-if="!$ctrl.hideSelect" ng-model="product.selected" ng-change="$ctrl.change()"></md-checkbox>
         <p>{{product.title}}</p>
         <md-icon ng-hide="$ctrl.hideEdit">mode_edit</md-icon>
+        <small ng-hide="$ctrl.hidePrice">
+          {{ product.price || 0 }} ₪
+        </small>
       </md-list-item>
     </md-list>
   </md-content> 

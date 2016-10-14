@@ -17,11 +17,15 @@ class HomeCtrl {
 
     this.today = new Date();
     this.success = false;
+    this.totalPrice = 0;
   }
   
 
   prodChange(products) {
+
     this.products = products;
+    this.totalPrice = products.reduce( (sum, item) => sum + (item.price || 0), 0);
+
   }
   getDataObj() {
 
@@ -29,6 +33,7 @@ class HomeCtrl {
     data.status = 0;
     data.end = this._$filter('date')( data.end, 'd/M/yyyy');
     data.start = this._$filter('date')( data.start, 'd/M/yyyy');
+    data.price = this.totalPrice;
     data.products = this.products.map( product => {
       return {
         title: product.title,
@@ -111,13 +116,19 @@ export const HomeComponent = {
 
       <products-list on-change="$ctrl.prodChange(products)" hide-edit="true"></products-list>
       
-      <md-button class="md-raised md-primary" ng-click="$ctrl.submit()" >שליחה</md-button>
+      <div layout="row" layout-align="space-between center">
+        <md-button class="md-raised md-primary" ng-click="$ctrl.submit()" >שליחה</md-button>
+        <p>
+          <strong>מחיר:</strong>
+          {{$ctrl.totalPrice}} ₪
+        </p>
+      </div>
     </md-content>
+
     <md-content ng-show="$ctrl.success">
       <h1>הזמנתך התקבלה.</h1>
       <p>יש לקחת בחשבון שיש אפשרות שלא כל הפריטים יהיו זמינים.</p>
       <md-button class="md-primary" ng-click="$ctrl.$onInit()">הזמנה נוספת</md-button>
-
     </md-content>
   </div>  
 </div>  

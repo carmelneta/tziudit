@@ -40,6 +40,7 @@ class Ctrl {
   productChanged(products) {
     this.dirtyFlag = true;
     this.updateProducts = products;
+    this.order.price = products.reduce( (sum, item) => sum + (item.price || 0), 0);
   }
 
   $onChanges(change) {    
@@ -74,8 +75,12 @@ export const EditOrderComponent = {
   <md-content flex layout-padding ng-if="$ctrl.id && !$ctrl.notFound">
     <form ng-submit="$ctrl.save()">
       
-      <p flex>{{$ctrl.order.start}} | {{$ctrl.order.end}}</p>
-
+      <div layout layout-align="space-between center" >
+        <p flex>{{$ctrl.order.start}} | {{$ctrl.order.end}}</p>
+        <p>
+          <strong>מחיר:</strong> {{$ctrl.order.price}} ₪
+        </p>
+      </div>
 
       <div layout="row" layout-align="space-between center">
       

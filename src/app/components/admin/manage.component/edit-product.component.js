@@ -8,9 +8,7 @@ class Ctrl {
   $onInit() { } 
 
   save() {
-    this.product.$save().then(
-
-      () => {
+    this.product.$save().then(  () => {
         //  After Save, If its creating mode, lets add another one
         if( this.productId === 'new') {
           this.$onChanges({
@@ -72,11 +70,18 @@ export const EditProductComponent = {
         <label>שם</label>
         <input ng-model="$ctrl.product.title">
       </md-input-container>
+
+      <md-input-container class="md-block">
+        <label>מחיר</label>
+        <input ng-model="$ctrl.product.price" type="number">
+      </md-input-container>
+
       <div layout="row" layout-align="space-between center">
       
       <md-button type="submit" class="md-primary md-raised">שמירה</md-button> 
       
       <md-button ng-click="$ctrl.delete()" ng-show="$ctrl.productId !== 'new'" class="md-warn md-raised">מחיקה</md-button>
+      </div>
     </form> 
   </md-content> 
   `
